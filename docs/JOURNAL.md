@@ -88,3 +88,29 @@ last-reviewed: 2026-09-05
 - Tester la page en local
 - Ajouter pagination (si besoin)
 - Déployer en production
+
+## 2026-09-05 — Enrichissement de la page (détails + données)
+
+**Fait :**
+- ✅ Affichage complet des 144 ressources avec tous les détails
+- ✅ Design professionnel avec cards améliorées
+- ✅ Headers avec titre et date de mise à jour
+- ✅ Sections pour chaque champ (description, lien, notes)
+- ✅ Mode vue grille et liste
+- ✅ Icons et couleurs pour chaque section
+- ✅ Stats en temps réel (résultats filtrés)
+- ✅ Footer avec date de dernière mise à jour
+- ✅ Responsive design complet
+
+**Structure des données affichées :**
+- 📌 Nom (titre principal)
+- 📝 Texte (description complète)
+- 🔗 URL (lien cliquable)
+- 📅 Date de mise à jour
+- 📋 Notes (notes Alex)
+- 🏷️ Étiquettes (filtrage)
+
+**Status :**
+✅ Code → GitHub
+✅ Données → Supabase (144 lignes)
+✅ Interface → Affichage complet + fonctionnalités
