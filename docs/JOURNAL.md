@@ -19,3 +19,15 @@ last-reviewed: 2026-09-05
 - Connecter le repo local au remote
 - Créer les premières pages HTML en local
 - Définir le projet (but, structure des données CSV, etc.)
+
+## 2026-09-05 — Connexion à GitHub
+
+**Fait :**
+- ✅ Création et configuration du repo local
+- ✅ Création du repo `techday2` sur GitHub
+- ✅ Configuration SSH et Personal Access Token
+- ✅ Premier push réussi
+
+**Prochaine étape :**
+- Définir le projet (but, structure des données CSV, type de versioning)
+- Créer les premières pages HTML
