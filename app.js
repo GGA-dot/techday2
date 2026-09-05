@@ -9,6 +9,7 @@ const supabase = supabase_js.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allData = [];
 let filteredData = [];
 let activeTags = new Set();
+let viewMode = 'grid';
 
 // Éléments DOM
 const searchInput = document.getElementById('search-input');
@@ -19,16 +20,17 @@ const resultsCount = document.getElementById('results-count');
 const connectionStatus = document.getElementById('connection-status');
 const statusIcon = document.getElementById('status-icon');
 const statusText = document.getElementById('status-text');
+const gridViewBtn = document.getElementById('grid-view');
+const listViewBtn = document.getElementById('list-view');
+const lastUpdate = document.getElementById('last-update');
 
 // Charger les données depuis Supabase
 async function loadData() {
     try {
-        // Mettre à jour le statut
         connectionStatus.style.background = 'rgba(255, 193, 7, 0.2)';
         statusIcon.textContent = '⏳';
         statusText.textContent = 'Chargement...';
 
-        // Récupérer les données
         const { data, error } = await supabase
             .from('base_connaissance')
             .select('*')
@@ -39,15 +41,12 @@ async function loadData() {
         allData = data || [];
         filteredData = [...allData];
 
-        // Mettre à jour le statut
         connectionStatus.style.background = 'rgba(74, 222, 128, 0.2)';
         statusIcon.textContent = '✅';
         statusText.textContent = `${allData.length} entrées`;
+        lastUpdate.textContent = `Dernière mise à jour : ${new Date().toLocaleDateString('fr-FR')}`;
 
-        // Créer les filtres de tags
         createTagFilters();
-
-        // Afficher les données
         displayData();
 
     } catch (error) {
@@ -71,7 +70,6 @@ function createTagFilters() {
 
     tagsContainer.innerHTML = '';
     
-    // Ajouter un bouton "Tous"
     const allBtn = document.createElement('button');
     allBtn.textContent = '🔄 Tous';
     allBtn.className = 'tag active';
@@ -83,8 +81,7 @@ function createTagFilters() {
     };
     tagsContainer.appendChild(allBtn);
 
-    // Ajouter les tags
-    tags.forEach(tag => {
+    Array.from(tags).sort().forEach(tag => {
         const btn = document.createElement('button');
         btn.textContent = tag;
         btn.className = 'tag';
@@ -106,16 +103,15 @@ function filterData() {
     const searchTerm = searchInput.value.toLowerCase();
     
     filteredData = allData.filter(item => {
-        // Filtre par recherche
         const matchSearch = !searchTerm || 
             (item.nom && item.nom.toLowerCase().includes(searchTerm)) ||
             (item.texte && item.texte.toLowerCase().includes(searchTerm)) ||
             (item.url && item.url.toLowerCase().includes(searchTerm)) ||
+            (item.note_alex && item.note_alex.toLowerCase().includes(searchTerm)) ||
             (item.etiquettes && item.etiquettes.toLowerCase().includes(searchTerm));
 
         if (!matchSearch) return false;
 
-        // Filtre par tags
         if (activeTags.size === 0) return true;
         
         if (!item.etiquettes) return false;
@@ -129,10 +125,10 @@ function filterData() {
 // Afficher les données
 function displayData() {
     dataContainer.innerHTML = '';
-    resultsCount.textContent = `${filteredData.length} résultat(s)`;
+    resultsCount.textContent = `📊 ${filteredData.length} résultat(s) sur ${allData.length}`;
 
     if (filteredData.length === 0) {
-        dataContainer.innerHTML = '<div class="no-results"><p>😞 Aucun résultat trouvé</p></div>';
+        dataContainer.innerHTML = '<div class="no-results"><p>😞 Aucun résultat trouvé</p><p>Essayez d\'autres mots-clés ou filtres</p></div>';
         return;
     }
 
@@ -142,36 +138,52 @@ function displayData() {
         
         let html = '';
         
-        // Titre
+        // Header avec titre
+        html += '<div class="card-header">';
         if (item.nom) {
             html += `<div class="card-title">${escapeHtml(item.nom)}</div>`;
         }
+        if (item.date_update) {
+            html += `<div class="card-subtitle">📅 ${escapeHtml(item.date_update)}</div>`;
+        }
+        html += '</div>';
 
-        // Contenu
-        html += '<div class="card-content">';
+        // Body avec les détails
+        html += '<div class="card-body">';
         
         if (item.texte) {
-            html += `<p class="card-text">${escapeHtml(item.texte)}</p>`;
+            html += '<div class="card-field">';
+            html += '<div class="card-field-label">📝 Description</div>';
+            html += `<div class="card-text-content card-field-value">${escapeHtml(item.texte)}</div>`;
+            html += '</div>';
         }
         
         if (item.url) {
-            html += `<a href="${escapeHtml(item.url)}" target="_blank" class="card-url">🔗 Lien</a>`;
+            html += '<div class="card-field">';
+            html += '<div class="card-field-label">🔗 Lien</div>';
+            html += `<div class="card-url-wrapper"><a href="${escapeHtml(item.url)}" target="_blank" class="card-url">Ouvrir la ressource →</a></div>`;
+            html += '</div>';
+        }
+        
+        if (item.note_alex) {
+            html += '<div class="card-field">';
+            html += '<div class="card-field-label">📋 Notes</div>';
+            html += `<div class="card-field-value">${escapeHtml(item.note_alex)}</div>`;
+            html += '</div>';
         }
         
         html += '</div>';
 
-        // Méta
-        html += '<div class="card-meta">';
+        // Footer avec tags et notes
+        html += '<div class="card-footer">';
         
         if (item.etiquettes) {
             const tags = item.etiquettes.split(',').map(t => t.trim()).filter(t => t);
+            html += '<div class="card-tags">';
             tags.forEach(tag => {
                 html += `<span class="card-tag">${escapeHtml(tag)}</span>`;
             });
-        }
-        
-        if (item.note_alex) {
-            html += `<span class="card-note">⭐ ${escapeHtml(item.note_alex)}</span>`;
+            html += '</div>';
         }
         
         html += '</div>';
@@ -189,7 +201,22 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Event listeners
+// Vue grille/liste
+gridViewBtn.addEventListener('click', () => {
+    viewMode = 'grid';
+    dataContainer.className = 'data-container grid-view';
+    gridViewBtn.classList.add('active');
+    listViewBtn.classList.remove('active');
+});
+
+listViewBtn.addEventListener('click', () => {
+    viewMode = 'list';
+    dataContainer.className = 'data-container list-view';
+    listViewBtn.classList.add('active');
+    gridViewBtn.classList.remove('active');
+});
+
+// Recherche
 searchInput.addEventListener('input', () => {
     clearSearchBtn.style.display = searchInput.value ? 'block' : 'none';
     filterData();
@@ -201,5 +228,5 @@ clearSearchBtn.addEventListener('click', () => {
     filterData();
 });
 
-// Charger les données au démarrage
+// Charger au démarrage
 document.addEventListener('DOMContentLoaded', loadData);

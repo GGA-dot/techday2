@@ -13,7 +13,7 @@
         <header>
             <div class="header-content">
                 <h1>🚀 TechDay Formation AIBS</h1>
-                <p>Base de Connaissance Interactive</p>
+                <p>Base de Connaissance Interactive - 144 Ressources</p>
             </div>
             <div class="connection-status" id="connection-status">
                 <span id="status-icon">⏳</span>
@@ -29,25 +29,29 @@
                     <input 
                         type="text" 
                         id="search-input" 
-                        placeholder="🔍 Rechercher dans la base..."
+                        placeholder="🔍 Rechercher par nom, description, URL..."
                         class="search-input"
                     >
                     <button id="clear-search" class="clear-btn" style="display: none;">✕</button>
                 </div>
 
                 <div class="filters">
-                    <label>Filtrer par étiquette :</label>
+                    <label>📁 Filtrer par catégorie :</label>
                     <div id="tags-container" class="tags-container"></div>
                 </div>
 
                 <div class="stats">
-                    <span id="results-count">Chargement...</span>
+                    <span id="results-count">Chargement des données...</span>
+                    <span id="display-mode-toggle" class="toggle-display">
+                        <button id="grid-view" class="view-btn active" title="Vue grille">⊞</button>
+                        <button id="list-view" class="view-btn" title="Vue liste">☰</button>
+                    </span>
                 </div>
             </section>
 
             <!-- DATA DISPLAY -->
             <section class="data-section">
-                <div id="data-container" class="data-container">
+                <div id="data-container" class="data-container grid-view">
                     <div class="loading">
                         <p>⏳ Chargement des données...</p>
                     </div>
@@ -57,8 +61,11 @@
 
         <!-- FOOTER -->
         <footer>
-            <p>Versioning : Code (GitHub) + Données (Supabase)</p>
-            <p id="footer-info">Connecté à Supabase</p>
+            <div class="footer-content">
+                <p><strong>Versioning :</strong> Code (GitHub) + Données (Supabase)</p>
+                <p id="footer-info">Connecté à Supabase</p>
+                <p id="last-update">Dernière mise à jour : --</p>
+            </div>
         </footer>
     </div>
 
