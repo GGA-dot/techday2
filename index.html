@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechDay - Formation AIBS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 TechDay Formation AIBS</h1>
+            <p>Projet d'intégration HTML + CSV + Supabase</p>
+        </header>
+
+        <main>
+            <section class="data-section">
+                <h2>Données locales (CSV)</h2>
+                <div id="csv-data" class="data-display">
+                    <p>Chargement des données...</p>
+                </div>
+            </section>
+
+            <section class="supabase-section">
+                <h2>Données Supabase</h2>
+                <div id="supabase-data" class="data-display">
+                    <p>Connexion à Supabase...</p>
+                </div>
+                <div class="status">
+                    <p id="connection-status">❌ Non connecté</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Versioning : GitHub (code) + Supabase (données)</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

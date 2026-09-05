@@ -31,3 +31,17 @@ last-reviewed: 2026-09-05
 **Prochaine étape :**
 - Définir le projet (but, structure des données CSV, type de versioning)
 - Créer les premières pages HTML
+
+## 2026-09-05 — Structure du projet TechDay créée
+
+**Fait :**
+- ✅ Pages HTML locales (index.html + style.css + app.js)
+- ✅ Fichier CSV d'exemple (data.csv)
+- ✅ README.md avec architecture
+- ✅ Intégration Supabase dans le JS
+- ✅ Mise à jour ROADMAP
+
+**Prochaine étape :**
+- Créer les tables Supabase
+- Tester l'affichage des données
+- Implémenter la synchronisation
