@@ -11,25 +11,24 @@ last-reviewed: 2026-09-05
 - [x] Initialisation Git locale
 - [x] Création de la structure docs/
 - [x] Connexion à GitHub
-- [x] Configuration Supabase
-- [x] Pages HTML locales (index.html + CSS + JS)
-- [x] Intégration CSV locale
-- [x] Structure de base du projet TechDay
+- [x] Configuration Supabase (table + 144 lignes)
+- [x] Pages HTML locales (design professionnel)
+- [x] Intégration Supabase (fetch + affichage)
+- [x] Système de recherche full-text
+- [x] Filtres par étiquettes
+- [x] Design responsive (mobile + desktop)
+- [x] Indicateur de connexion Supabase
 
 ## 🔜 À faire
 
-- [ ] Créer tables Supabase (schema)
-- [ ] Tester synchronisation CSV → Supabase
-- [ ] Ajouter authentification optionnelle
-- [ ] Implémenter Real-Time Supabase (live updates)
-- [ ] Créer dashboard avec données
-- [ ] Tests et déploiement
-
-## 💬 À trancher
-
-- Type de données à stocker dans Supabase ?
-- Authentification utilisateurs nécessaire ?
-- Fonctionnalités avancées (uploads, filtres, etc.) ?
+- [ ] Ajouter pagination pour gros volumes
+- [ ] Exporter les résultats en CSV
+- [ ] Mode sombre/clair
+- [ ] Historique des modifications
+- [ ] Ajout/édition directe depuis l'interface
+- [ ] Authentification utilisateurs
+- [ ] Real-Time Supabase (live updates)
+- [ ] Déploiement en production
 
 ## 📊 Versioning
 
@@ -38,5 +37,11 @@ last-reviewed: 2026-09-05
 - Configuration
 
 **Non-déterministe (Supabase):**
-- Données utilisateurs (quand implémentées)
-- Historique des changements
+- Données base_connaissance ✅
+- Historique des changements (futur)
+
+## 🎯 Priorités actuelles
+
+1. **Tester la page en local** → vérifier affichage + recherche + filtres
+2. **Ajouter des fonctionnalités** → pagination, export
+3. **Déployer** → Vercel ou Netlify

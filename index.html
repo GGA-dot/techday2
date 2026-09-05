@@ -3,37 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechDay - Formation AIBS</title>
+    <title>TechDay AIBS - Base de Connaissance</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <header>
-            <h1>🚀 TechDay Formation AIBS</h1>
-            <p>Projet d'intégration HTML + CSV + Supabase</p>
+            <div class="header-content">
+                <h1>🚀 TechDay Formation AIBS</h1>
+                <p>Base de Connaissance Interactive</p>
+            </div>
+            <div class="connection-status" id="connection-status">
+                <span id="status-icon">⏳</span>
+                <span id="status-text">Connexion...</span>
+            </div>
         </header>
 
+        <!-- MAIN CONTENT -->
         <main>
-            <section class="data-section">
-                <h2>Données locales (CSV)</h2>
-                <div id="csv-data" class="data-display">
-                    <p>Chargement des données...</p>
+            <!-- SEARCH & FILTERS -->
+            <section class="search-section">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="🔍 Rechercher dans la base..."
+                        class="search-input"
+                    >
+                    <button id="clear-search" class="clear-btn" style="display: none;">✕</button>
+                </div>
+
+                <div class="filters">
+                    <label>Filtrer par étiquette :</label>
+                    <div id="tags-container" class="tags-container"></div>
+                </div>
+
+                <div class="stats">
+                    <span id="results-count">Chargement...</span>
                 </div>
             </section>
 
-            <section class="supabase-section">
-                <h2>Données Supabase</h2>
-                <div id="supabase-data" class="data-display">
-                    <p>Connexion à Supabase...</p>
-                </div>
-                <div class="status">
-                    <p id="connection-status">❌ Non connecté</p>
+            <!-- DATA DISPLAY -->
+            <section class="data-section">
+                <div id="data-container" class="data-container">
+                    <div class="loading">
+                        <p>⏳ Chargement des données...</p>
+                    </div>
                 </div>
             </section>
         </main>
 
+        <!-- FOOTER -->
         <footer>
-            <p>Versioning : GitHub (code) + Supabase (données)</p>
+            <p>Versioning : Code (GitHub) + Données (Supabase)</p>
+            <p id="footer-info">Connecté à Supabase</p>
         </footer>
     </div>
 
