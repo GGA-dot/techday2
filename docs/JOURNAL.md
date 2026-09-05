@@ -45,3 +45,23 @@ last-reviewed: 2026-09-05
 - Créer les tables Supabase
 - Tester l'affichage des données
 - Implémenter la synchronisation
+
+## 2026-09-05 — Import de la base de connaissance dans Supabase
+
+**Fait :**
+- ✅ Création de la table `base_connaissance` dans Supabase
+- ✅ Import de 144 lignes du CSV
+- ✅ Configuration RLS (Row Level Security)
+
+**Structure Supabase :**
+- nom
+- note_alex
+- texte
+- url
+- date_update
+- etiquettes
+
+**Statut :**
+- Code (HTML/CSS/JS) → GitHub ✅
+- Données → Supabase ✅
+- Synchronisation → Prochaines étapes
