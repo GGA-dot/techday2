@@ -2,7 +2,23 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(brew install *)",
+      "Bash(ssh-keyscan github.com)",
+      "Bash(mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null && git remote add origin git@github.com:GGA-dot/techday2.git && git push -u origin main 2>&1 | head -20)",
+      "Bash(ssh-keygen -t ed25519 -f ~/.ssh/github -N \"\" -C \"ggaafar777@gmail.com\")",
+      "Bash(cat)",
+      "Bash(chmod 600 ~/.ssh/config)",
+      "Bash(ssh -T git@github.com)",
+      "Bash(git commit -m 'docs: mettre à jour journal - connexion GitHub réussie *)",
+      "Bash(chmod 600 /Users/GG_1/Desktop/Techday2/.env)",
+      "Bash(git commit -m 'feat: créer structure TechDay \\(HTML + CSV + Supabase\\) *)",
+      "Bash(git commit -m 'feat: import base de connaissance dans Supabase \\(144 lignes\\) *)",
+      "Bash(git commit -m 'feat: créer page HTML professionnelle avec Supabase *)",
+      "Bash(git commit -m 'feat: finaliser page HTML avec design et données *)"
     ]
   }
 }
