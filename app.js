@@ -9,25 +9,18 @@ const clearSearchBtn = document.getElementById('clear-search');
 const tagsContainer = document.getElementById('tags-container');
 const dataContainer = document.getElementById('data-container');
 const resultsCount = document.getElementById('results-count');
-const connectionStatus = document.getElementById('connection-status');
-const statusIcon = document.getElementById('status-icon');
-const statusText = document.getElementById('status-text');
+const resultsText = document.getElementById('results-text');
 const gridViewBtn = document.getElementById('grid-view');
 const listViewBtn = document.getElementById('list-view');
 const lastUpdate = document.getElementById('last-update');
+const totalCount = document.getElementById('total-count');
 
-// Charger les données depuis le CSV
+// Charger les données
 async function loadData() {
     try {
-        connectionStatus.style.background = 'rgba(255, 193, 7, 0.2)';
-        statusIcon.textContent = '⏳';
-        statusText.textContent = 'Chargement...';
-
-        // Charger base de connaissance.csv
         const response = await fetch('base%20de%20connaissance.csv');
         const csv = await response.text();
         
-        // Parser le CSV
         const lines = csv.trim().split('\n');
         const headers = lines[0].split(',').map(h => h.trim());
         
@@ -36,11 +29,11 @@ async function loadData() {
             const line = lines[i];
             if (!line.trim()) continue;
             
-            // Simple split pour le CSV
             const parts = line.split(',');
             const row = {};
             headers.forEach((header, index) => {
-                row[header.toLowerCase().replace(/\s+/g, '_').replace(/é/g, 'e')] = parts[index] ? parts[index].trim() : '';
+                const key = header.toLowerCase().replace(/\s+/g, '_').replace(/é/g, 'e');
+                row[key] = parts[index] ? parts[index].trim() : '';
             });
             
             if (Object.values(row).some(v => v)) {
@@ -49,32 +42,25 @@ async function loadData() {
         }
         
         filteredData = [...allData];
-
-        connectionStatus.style.background = 'rgba(74, 222, 128, 0.2)';
-        statusIcon.textContent = '✅';
-        statusText.textContent = `${allData.length} ressources chargées`;
-        lastUpdate.textContent = `Dernière mise à jour : ${new Date().toLocaleDateString('fr-FR')}`;
+        lastUpdate.textContent = new Date().toLocaleDateString('fr-FR', { 
+            year: 'numeric', month: 'long', day: 'numeric' 
+        });
 
         createTagFilters();
         displayData();
 
     } catch (error) {
-        console.error('Erreur:', error);
-        connectionStatus.style.background = 'rgba(239, 68, 68, 0.2)';
-        statusIcon.textContent = '❌';
-        statusText.textContent = 'Erreur de chargement';
-        dataContainer.innerHTML = `<div class="no-results"><p>❌ ${error.message}</p></div>`;
+        dataContainer.innerHTML = `<div class="no-results"><p>❌ Erreur: ${error.message}</p></div>`;
     }
 }
 
-// Créer les filtres de tags
+// Créer filtres
 function createTagFilters() {
     const tags = new Set();
     allData.forEach(item => {
-        const etiquettes_key = item.etiquettes || item.étiquettes || '';
-        if (etiquettes_key) {
-            const etiquettes = etiquettes_key.split(',').map(e => e.trim()).filter(e => e);
-            etiquettes.forEach(tag => tags.add(tag));
+        const etKey = item.etiquettes || item.étiquettes || '';
+        if (etKey) {
+            etKey.split(',').map(e => e.trim()).filter(e => e).forEach(tag => tags.add(tag));
         }
     });
 
@@ -108,7 +94,7 @@ function createTagFilters() {
     });
 }
 
-// Filtrer les données
+// Filtrer données
 function filterData() {
     const searchTerm = searchInput.value.toLowerCase();
     
@@ -122,21 +108,25 @@ function filterData() {
         
         if (activeTags.size === 0) return true;
         
-        const etiquettes_key = item.etiquettes || item.étiquettes || '';
-        const itemTags = etiquettes_key.split(',').map(e => e.trim()).filter(e => e);
+        const etKey = item.etiquettes || item.étiquettes || '';
+        const itemTags = etKey.split(',').map(e => e.trim()).filter(e => e);
         return itemTags.some(tag => activeTags.has(tag));
     });
 
     displayData();
 }
 
-// Afficher les données
+// Afficher données
 function displayData() {
     dataContainer.innerHTML = '';
-    resultsCount.textContent = `📊 ${filteredData.length} résultat(s) sur ${allData.length}`;
+    const count = filteredData.length;
+    resultsCount.textContent = count;
+    resultsText.textContent = count === allData.length 
+        ? `Affichage de ${count} ressources`
+        : `${count} ressource${count > 1 ? 's' : ''} trouvée${count > 1 ? 's' : ''}`;
 
-    if (filteredData.length === 0) {
-        dataContainer.innerHTML = '<div class="no-results"><p>😞 Aucun résultat trouvé</p></div>';
+    if (count === 0) {
+        dataContainer.innerHTML = '<div class="no-results"><p>😞 Aucune ressource trouvée</p><p>Essayez d\'autres critères</p></div>';
         return;
     }
 
@@ -144,15 +134,13 @@ function displayData() {
         const card = document.createElement('div');
         card.className = 'card';
         
-        let html = '';
-        
-        html += '<div class="card-header">';
+        let html = '<div class="card-header">';
         if (item.nom) {
             html += `<div class="card-title">${escapeHtml(item.nom)}</div>`;
         }
-        const dateField = item.date_de_mise_a_jour_n8n || item.date_mise_a_jour_n8n || '';
-        if (dateField) {
-            html += `<div class="card-subtitle">📅 ${escapeHtml(dateField)}</div>`;
+        const dateKey = item.date_de_mise_a_jour_n8n || item.date_mise_a_jour_n8n || '';
+        if (dateKey) {
+            html += `<div class="card-subtitle">📅 ${escapeHtml(dateKey)}</div>`;
         }
         html += '</div>';
 
@@ -160,34 +148,33 @@ function displayData() {
         
         if (item.texte) {
             html += '<div class="card-field">';
-            html += '<div class="card-field-label">📝 Description</div>';
-            html += `<div class="card-text-content card-field-value">${escapeHtml(item.texte)}</div>`;
+            html += '<span class="card-label">Description</span>';
+            html += `<div class="card-text-box card-content">${escapeHtml(item.texte)}</div>`;
             html += '</div>';
         }
         
         if (item.url) {
             html += '<div class="card-field">';
-            html += '<div class="card-field-label">🔗 Lien</div>';
-            html += `<div class="card-url-wrapper"><a href="${escapeHtml(item.url)}" target="_blank" class="card-url">Ouvrir la ressource →</a></div>`;
+            html += '<span class="card-label">Ressource</span>';
+            html += `<a href="${escapeHtml(item.url)}" target="_blank" class="card-link">Ouvrir le lien →</a>`;
             html += '</div>';
         }
         
-        const noteField = item.note_alex || item.note_Alex || '';
-        if (noteField) {
+        const noteKey = item.note_alex || item.note_Alex || '';
+        if (noteKey) {
             html += '<div class="card-field">';
-            html += '<div class="card-field-label">📋 Notes</div>';
-            html += `<div class="card-field-value">${escapeHtml(noteField)}</div>`;
+            html += '<span class="card-label">Notes</span>';
+            html += `<div class="card-content">${escapeHtml(noteKey)}</div>`;
             html += '</div>';
         }
         
         html += '</div>';
 
         html += '<div class="card-footer">';
-        const etiquettes_key = item.etiquettes || item.étiquettes || '';
-        if (etiquettes_key) {
-            const tags = etiquettes_key.split(',').map(t => t.trim()).filter(t => t);
+        const etKey = item.etiquettes || item.étiquettes || '';
+        if (etKey) {
             html += '<div class="card-tags">';
-            tags.forEach(tag => {
+            etKey.split(',').map(t => t.trim()).filter(t => t).forEach(tag => {
                 html += `<span class="card-tag">${escapeHtml(tag)}</span>`;
             });
             html += '</div>';
@@ -207,13 +194,13 @@ function escapeHtml(text) {
 }
 
 gridViewBtn.addEventListener('click', () => {
-    dataContainer.className = 'data-container grid-view';
+    dataContainer.className = 'resources-grid grid-view';
     gridViewBtn.classList.add('active');
     listViewBtn.classList.remove('active');
 });
 
 listViewBtn.addEventListener('click', () => {
-    dataContainer.className = 'data-container list-view';
+    dataContainer.className = 'resources-grid list-view';
     listViewBtn.classList.add('active');
     gridViewBtn.classList.remove('active');
 });

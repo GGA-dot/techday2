@@ -7,66 +7,114 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <header>
-            <div class="header-content">
-                <h1>🚀 TechDay Formation AIBS</h1>
-                <p>Base de Connaissance Interactive - 144 Ressources</p>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🚀</span>
+                <span class="logo-text">TechDay</span>
             </div>
-            <div class="connection-status" id="connection-status">
-                <span id="status-icon">⏳</span>
-                <span id="status-text">Connexion...</span>
+            <div class="nav-stats">
+                <span id="total-count" class="nav-stat">📚 144 Ressources</span>
+                <span id="nav-status" class="nav-stat">✅ Prêt</span>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <!-- MAIN CONTENT -->
-        <main>
-            <!-- SEARCH & FILTERS -->
-            <section class="search-section">
-                <div class="search-box">
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Base de Connaissance Interactive</h1>
+            <p class="hero-subtitle">Formation AIBS - Explorez 144 ressources curatées</p>
+        </div>
+        <div class="hero-pattern"></div>
+    </section>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- SIDEBAR FILTERS -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🔍 Affiner votre recherche</h2>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="search-widget">
+                <div class="search-input-wrapper">
                     <input 
                         type="text" 
                         id="search-input" 
-                        placeholder="🔍 Rechercher par nom, description, URL..."
+                        placeholder="Chercher une ressource..."
                         class="search-input"
                     >
-                    <button id="clear-search" class="clear-btn" style="display: none;">✕</button>
+                    <button id="clear-search" class="search-clear" style="display: none;">✕</button>
                 </div>
+            </div>
 
-                <div class="filters">
-                    <label>📁 Filtrer par catégorie :</label>
-                    <div id="tags-container" class="tags-container"></div>
+            <!-- CATEGORIES FILTER -->
+            <div class="filter-widget">
+                <h3 class="filter-title">📁 Catégories</h3>
+                <div id="tags-container" class="tags-list"></div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-widget">
+                <div class="stat-item">
+                    <span class="stat-label">Résultats</span>
+                    <span id="results-count" class="stat-value">--</span>
                 </div>
+            </div>
+        </aside>
 
-                <div class="stats">
-                    <span id="results-count">Chargement des données...</span>
-                    <span id="display-mode-toggle" class="toggle-display">
-                        <button id="grid-view" class="view-btn active" title="Vue grille">⊞</button>
-                        <button id="list-view" class="view-btn" title="Vue liste">☰</button>
-                    </span>
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            <!-- VIEW CONTROLS -->
+            <div class="controls-bar">
+                <div class="results-info">
+                    <p id="results-text">Chargement des ressources...</p>
                 </div>
-            </section>
+                <div class="view-controls">
+                    <button id="grid-view" class="view-btn active" title="Vue grille">
+                        <span>⊞ Grille</span>
+                    </button>
+                    <button id="list-view" class="view-btn" title="Vue liste">
+                        <span>☰ Liste</span>
+                    </button>
+                </div>
+            </div>
 
-            <!-- DATA DISPLAY -->
-            <section class="data-section">
-                <div id="data-container" class="data-container grid-view">
-                    <div class="loading">
-                        <p>⏳ Chargement des données...</p>
+            <!-- CONTENT GRID -->
+            <section class="resources-section">
+                <div id="data-container" class="resources-grid grid-view">
+                    <div class="loading-state">
+                        <div class="loader"></div>
+                        <p>Chargement des ressources...</p>
                     </div>
                 </div>
             </section>
         </main>
-
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-content">
-                <p><strong>Versioning :</strong> Code (GitHub) + Données (CSV Local)</p>
-                <p id="footer-info">Connecté aux données locales</p>
-                <p id="last-update">Dernière mise à jour : --</p>
-            </div>
-        </footer>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>À propos</h4>
+                <p>Base de connaissance collaborative pour la formation TechDay AIBS</p>
+            </div>
+            <div class="footer-section">
+                <h4>Versioning</h4>
+                <p>📝 Code : GitHub | 📊 Données : Supabase</p>
+            </div>
+            <div class="footer-section">
+                <h4>Mise à jour</h4>
+                <p id="last-update">--</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TechDay AIBS - Formation Interactive</p>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
 </body>
